@@ -1,15 +1,20 @@
 
 import React,{ useEffect,useState } from 'react';
-import { Link } from 'react-router-dom';
-import {Box,Select,MenuItem,Input} from '@mui/material';
+import {Box,
+    Select,
+    MenuItem,
+    Input,
+    ButtonGroup,
+    Button,
+    InputAdornment
+
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import CreateIconWName from './CreateIconWName';
+import CryptoGrid from './CryptoGrid';
 
-       
-
-import { DataGrid } from '@mui/x-data-grid';
-import { TextField } from '@mui/material';
 import CoinData from './CoinData';
-import clsx from 'clsx';
+
 
 
 
@@ -21,33 +26,54 @@ export default function DataTable() {
     const [data, setData] = useState([]);
     const [searchItem, setSearchItem] = useState('');
     const [api, setApi] = useState('https://coinranking1.p.rapidapi.com/coins?');
+    const [timePeriod, setTimePeriod]=useState('24h');
+    const [categoryTag, setCategoryTag]=useState(null);
+    const [coin_name, setCoinName]=useState('')
 
-    const [coin_name,setCoinName]=useState('')
+    let iconStyle;
     const handleRowClick = (e) => {
         setCoinName(e.row.referenceId)      
     }
-
-
-
     const handleChange = (e) => {
-        setSearchItem(e.target.value);
-        
-       
-        
+        iconStyle={
+            color:'blue'
+        }
+
+        setSearchItem(e.target.value);     
     }
-    const availableTimePeriods = ['1h','3h','12h','24h','7d','30d','3m','1y','3y','5y'];
-    const [timePeriod,setTimePeriod]=useState('24h');
+    const handleCategory=(index)=>{
+        setCategoryTag(index)
+    }
     const handleTime=(e)=>{
         setTimePeriod(e.target.value)
        
     }
     
+
+    const availableTimePeriods = ['1h','3h','12h','24h','7d','30d','3m','1y','3y','5y'];
+    const categoryTags=['meme','defi','stablecoin' ,'nft', 'dex', 'exchange' ,'staking' ,
+    'dao', 'metaverse', 'gaming' ,'wrapped' ,'layer-1', 'layer-2']
+    
+  
+   
+
+
+    
+
+   
     
         
-    
+    useEffect(()=>{
+        let new_api = api;
+        new_api += `&tags%5B0%5D=${categoryTags[categoryTag]}`;
+        setApi(new_api);
+    },[categoryTag,api])
+
         useEffect(()=>{
+          
             
             setApi(`https://coinranking1.p.rapidapi.com/coins?search=${searchItem}&timePeriod=${timePeriod}`)
+
 
           
             const options = {
@@ -68,6 +94,7 @@ export default function DataTable() {
             
 }
 
+
     ,[searchItem,api,timePeriod])
    
    
@@ -76,6 +103,7 @@ export default function DataTable() {
     const columns = [
         {field:'rank' ,
          headerName: <p className='font-montserrat font-bold'>{'Rank'}</p>, 
+         
          width: 70},
         
         { field: 'name',
@@ -83,37 +111,120 @@ export default function DataTable() {
           width: 200,
           renderCell:(params)=>{
             return (
-                <CreateIconWName name={params.row.name} icon={params.row.iconUrl} symbol={params.row.symbol}/>
+                <CreateIconWName name={params.row.name} icon={params.row.icon} symbol={params.row.symbol}/>
             )
           }
          },
         {field : 'price', 
         headerName:<p className='font-montserrat font-bold'>{'Price'}</p>, 
-        width: 200
+        width: 200,
+        renderCell:(params)=>{
+            const price = params.row.price;
+            return (
+                (price)>1?<p>{`$${Number(price).toFixed(2)}`}</p>:<p>{`$${Number(price).toFixed(8)}`}</p>
+            )
+            
+        }
     },
         {field : 'change', 
         headerName: <p className='font-montserrat font-bold'>{'Change'}</p>, 
         width: 200,
-        cellClassName:(params)=>{
-        return clsx('super-app', {
+        renderCell:(params)=>{
+            if(params.row.value===null){
+                return (
+                    <p>{`N/A`}</p>
+                )
+            }
             
-            positive: params.value > 0,
-            negative: params.value < 0,
+            
+            return (        
+               <p 
+               className={params.row.change>0?'text-green-700':'text-red-600'}>
+                {`${params.row.change}%`}
+                </p>
+            )
         }
-        )
-
-        }
+        
 
     
 },
         {field : 'marketCap',
          headerName: <p className='font-montserrat font-bold'>{'Market Cap'}</p>, 
-         width: 200
+         width: 200,
+         renderCell:(params)=>{
+            const volume = params.row.marketCap;
+            const volumeInBillion = volume/1000000000;
+            const volumeInMillion = volume/1000000;
+            const volumeInThousand = volume/1000;
+
+            
+            if(volumeInBillion>1){
+            return (
+                <p>{`$${volumeInBillion.toFixed(2)}B`}</p>
+
+            )
+            }
+            else if(volumeInMillion>1){
+                return (
+                    <p>{`$${volumeInMillion.toFixed(2)}M`}</p>
+    
+                )
+            }
+            else if(volumeInThousand>1){
+                return (
+                    <p>{`$${volumeInThousand.toFixed(2)}K`}</p>
+    
+                )
+            }
+            else{
+                return (
+                    <p>{`$${volume}`}</p>
+    
+                )
+            }   
+
+         }
         },
         {field : 'volume', 
         headerName:<p className='font-montserrat font-bold'>{'Volume'}</p>,
-         width: 200
+         width: 200,
+         renderCell:(params)=>{
+            const volume = params.row.volume;
+            const volumeInBillion = volume/1000000000;
+            const volumeInMillion = volume/1000000;
+            const volumeInThousand = volume/1000;
+
+            
+            if(volumeInBillion>1){
+            return (
+                <p>{`$${volumeInBillion.toFixed(2)}B`}</p>
+
+            )
+            }
+            else if(volumeInMillion>1){
+                return (
+                    <p>{`$${volumeInMillion.toFixed(2)}M`}</p>
+    
+                )
+            }
+            else if(volumeInThousand>1){
+                return (
+                    <p>{`$${volumeInThousand.toFixed(2)}K`}</p>
+    
+                )
+            }
+            else{
+                return (
+                    <p>{`$${volume}`}</p>
+    
+                )
+            }   
+
+         }
         },
+    
+    
+
         
     ];
   
@@ -137,7 +248,7 @@ export default function DataTable() {
         <div className='right-1'>
         <Box sx={{
             fontFamily:'Montserrat',
-             width: 100 }}>
+            width: 100 }}>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
@@ -158,7 +269,8 @@ export default function DataTable() {
                 <MenuItem sx={{
                     fontFamily:'Montserrat',
                     fontWeight:'bold',
-                    color:'grey'
+                    color:'grey',
+                  
 
                 }}  value={item}>{item}</MenuItem>
             ))}
@@ -166,52 +278,69 @@ export default function DataTable() {
             
 
         </Box>
+
+        
+       
+        
         <Input
         sx={{
             fontFamily:'Montserrat',
             fontWeight:'bold',
-            color:'grey'
+            color:'grey',
+            marginBottom:2
         }}
+        startAdornment = {
+            <InputAdornment position="start">
+              <SearchIcon sx={iconStyle} />
+            </InputAdornment>
+    }
+       
         placeholder='Search'
         value={searchItem}
         onChange={handleChange}
         />
-        </div>
+        <br></br>
 
-        <div 
+        <ButtonGroup variant="text" aria-label="text button group">
         
-        style={{ height: 400, width: '100%' }}>
-            
-            
-            <DataGrid
-            //style for the table
-            style={{fontFamily:'Montserrat',
-            fontWeight:'bold'}}
-            sx={{
-                '& .super-app.negative': {
-                    color: 'red',
-                    fontWeight: 'bold',
-                },
-                '& .super-app.positive': {
-                    color: 'green',
-                    fontWeight: 'bold',
-                },
+        {categoryTags.map((item,index)=>(
+            <Button sx={{
 
+                fontFamily:'Montserrat',
+                fontWeight:'bold',
+                color:'grey',
+                fontSize:10,
+                ":hover":{
+                    color:'black',
+                },
+                ":checked":{
+                    color:'black',
+                    backgroundColor:'grey'
+                }
+                
             }}
-          
-            
 
-            onRowClick={handleRowClick} 
-            rows={rows} 
-            columns={columns} 
-            pageSize={10} 
-            isRowSelectable={false}   
-            isCellEditable={false}  
-            disableSelectionOnClick={true}
-            
-            />       
+            onClick={     
+                ()=>{handleCategory(index)}}
+            active={categoryTag===index}  
+            >
+                {item}
+            </Button>
+        ))}
+        </ButtonGroup>
+        
         </div>
-        <CoinData coin_name={coin_name} />
+        <CryptoGrid
+         rows={rows} 
+         columns={columns} 
+         handleRowClick={handleRowClick} 
+         />
+
+        
+
+        <CoinData
+         coin_name={coin_name} 
+         />
         </div>
     );
 

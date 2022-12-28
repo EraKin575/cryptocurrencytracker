@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react';
 
 
 
+
 export default function CoinData({coin_name}){
     const [coinData,setCoinData] = useState([]);
     

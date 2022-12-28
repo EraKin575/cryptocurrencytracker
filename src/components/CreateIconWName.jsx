@@ -1,19 +1,23 @@
 import React from 'react';
-export default function CreateIconWName({name,icon,symbol}) {
 
-    return (
-        <div className='font-[montserrat] flex'>
-                    <object data={icon} width="40" height="40" title={name} aria-label="this object has text" /> 
-        <div className=''>
-
-            
-
-            <p>{name}</p>
-            <p className='font-semibold'>{symbol}</p> 
-
-
-        </div>
-        
-        </div>
-    )
+export default function CreateIconWName({ name, icon, symbol }) {
+    let iconType;
+    if(icon.includes('.svg')){
+        iconType='image/svg+xml'
+    }
+    else if(icon.includes('.png')){
+        iconType='image/png'
+    }
+  return (
+    <div className={`font-montserrat flex gap-3 overflow-hidden`}>
+        <img src={icon
+        } alt={name} className="w-6 h-6 mt-2" type={iconType}/>
+     
+      <div className="">
+        <p>{name}</p>
+        <p className="font-medium text-left text-xs">{symbol}</p>
+      </div>
+    </div>
+  );
+    
 }
