@@ -9,7 +9,11 @@ import CoinData from './components/CoinData';
 function App() {
   return (
     <div className="App">
-     <CryptoPrices/>
+
+   
+
+     <CryptoPrices />
+   
      
     </div>
   );

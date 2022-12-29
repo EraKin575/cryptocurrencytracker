@@ -1,34 +1,34 @@
-import React,{useEffect,useState} from 'react';
+import React,{useState,useEffect} from 'react';
 
 
+export default function CoinData({referenceId}){
 
+    const [coinData,setcoinData]=useState({})
+   
 
-export default function CoinData({coin_name}){
-    const [coinData,setCoinData] = useState([]);
-    
-    
     useEffect(()=>{
-        const options = {
-            method: 'GET',
-            headers: {
-                'X-RapidAPI-Key':'a67bb7208amshc9f3583b2bf2877p159913jsn086a6691f0d5',
-                'X-RapidAPI-Host': 'coinranking1.p.rapidapi.com'
-            },
-        };
-        fetch(`https://coinranking1.p.rapidapi.com/coin/${coin_name}`,options)
-            .then(response => response.json())
-            .then(response => setCoinData(response.data.coin))
-            .catch(err => console.error(err));
-    },[coin_name])
+    
+        
+              
+             fetch(`https://api.coinranking.com/v2/coin/${referenceId}`)
+                .then(responseJson=>responseJson.json())
+                .then(responseJson=>setcoinData(responseJson.data.coin))
+                .then(err=>console.log(err))
+          
+            
+            
 
-    return (
+        
+
+    },
+    [referenceId])
+    return(
         <div>
             <h1>{coinData.name}</h1>
-            
-            
+          
         </div>
     )
-
-
-
+    
+    
 }
+

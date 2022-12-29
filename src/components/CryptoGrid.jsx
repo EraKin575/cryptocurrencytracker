@@ -7,9 +7,7 @@ export default function CryptoGrid({rows,columns,handleRowClick}) {
         <DataGrid
             //style for the table
             style={{fontFamily:'Montserrat',
-            fontWeight:'bold'
-        }}
-           
+            fontWeight:'bold'}}
             onRowClick={handleRowClick} 
             rows={rows} 
             columns={columns} 
@@ -17,7 +15,7 @@ export default function CryptoGrid({rows,columns,handleRowClick}) {
             isRowSelectable={false}   
             isCellEditable={false}  
             disableSelectionOnClick={true}
-            
+            reset
             
             />   
             </div>    

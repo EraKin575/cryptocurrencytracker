@@ -13,6 +13,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import CreateIconWName from './CreateIconWName';
 import CryptoGrid from './CryptoGrid';
 
+
+
+
 import CoinData from './CoinData';
 
 
@@ -21,18 +24,23 @@ import CoinData from './CoinData';
 
 export default function DataTable() {
 
-  
+    
+
+ 
     
     const [data, setData] = useState([]);
     const [searchItem, setSearchItem] = useState('');
     const [api, setApi] = useState('https://coinranking1.p.rapidapi.com/coins?');
     const [timePeriod, setTimePeriod]=useState('24h');
     const [categoryTag, setCategoryTag]=useState(null);
-    const [coin_name, setCoinName]=useState('')
+    const [coinId, setCoinId]=useState([])
 
     let iconStyle;
     const handleRowClick = (e) => {
-        setCoinName(e.row.referenceId)      
+        setCoinId([e.row.referenceId])  
+       
+
+        
     }
     const handleChange = (e) => {
         iconStyle={
@@ -231,6 +239,7 @@ export default function DataTable() {
     const rows=data.map((item,index)=>({
         id: index+1,
         referenceId: item.uuid,
+        referenceCurrencyId:item.referenceCurrencyUuid,
         rank: item.rank,
         name:(item.name),
         price: item.price,
@@ -330,16 +339,23 @@ export default function DataTable() {
         </ButtonGroup>
         
         </div>
+        
+
+         
         <CryptoGrid
          rows={rows} 
          columns={columns} 
          handleRowClick={handleRowClick} 
          />
+            
+        
 
         
 
         <CoinData
-         coin_name={coin_name} 
+         referenceId={coinId[0]}
+      
+
          />
         </div>
     );
