@@ -10,6 +10,7 @@ export default function CryptoGrid({rows,columns,handleRowClick}) {
             fontWeight:'bold'}}
             onRowClick={handleRowClick} 
             rows={rows} 
+            
             columns={columns} 
             pageSize={rows.length} 
             isRowSelectable={false}   

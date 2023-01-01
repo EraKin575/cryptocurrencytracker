@@ -37,7 +37,7 @@ export default function DataTable() {
 
     let iconStyle;
     const handleRowClick = (e) => {
-        setCoinId([e.row.referenceId])  
+        setCoinId([e.row.referenceId,e.row.referenceCurrencyId])  
        
 
         
@@ -239,9 +239,10 @@ export default function DataTable() {
     const rows=data.map((item,index)=>({
         id: index+1,
         referenceId: item.uuid,
-        referenceCurrencyId:item.referenceCurrencyUuid,
+        referenceCurrencyId:item.referenceCurrencyUuid,     
         rank: item.rank,
         name:(item.name),
+
         price: item.price,
         icon: item.iconUrl,
         symbol: item.symbol,
@@ -354,6 +355,7 @@ export default function DataTable() {
 
         <CoinData
          referenceId={coinId[0]}
+         referenceCurrencyId={coinId[1]}
       
 
          />
