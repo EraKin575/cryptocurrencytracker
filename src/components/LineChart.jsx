@@ -23,7 +23,7 @@ const LineChart=({referenceId,referenceCurrencyId})=>{
     },[referenceId])
     console.log(historicalData)
    
-  //add graph for 1h,24h,1y,4y,5y
+  //add graph for 1h,24h,1y,4y,
 
     return (
 
