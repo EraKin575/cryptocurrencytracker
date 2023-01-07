@@ -34,6 +34,8 @@ export default function DataTable() {
     const [timePeriod, setTimePeriod]=useState('24h');
     const [categoryTag, setCategoryTag]=useState(null);
     const [coinId, setCoinId]=useState([])
+    const [selected, setSelected]=useState();
+    
 
     let iconStyle;
     const handleRowClick = (e) => {
@@ -51,6 +53,9 @@ export default function DataTable() {
     }
     const handleCategory=(item)=>{
         setCategoryTag(item)
+        setSelected(item)
+        const selectedStyle='font-montserrat text-xs cursor-pointer text-[#0060ff] bg-[#b3d1ff]  font-bold hover:text-[#0060ff] hover:bg-[#b3d1ff]   p-2 rounded-lg';
+        const unselectedStyle='font-montserrat text-xs cursor-pointer text-[#0060ff]  font-bold hover:text-[#0060ff] hover:bg-[#b3d1ff]   p-2 rounded-lg';
     }
     const handleTime=(e)=>{
         setTimePeriod(e.target.value)

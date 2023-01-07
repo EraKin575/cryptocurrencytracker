@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
+import LineChart from './LineChart';
 
 const API_OPTIONS = {
   method: 'GET',
@@ -64,8 +65,10 @@ export default function CoinData({ referenceId, referenceCurrencyId }) {
    <div className='flex-col ml-10 mt-5'>
     <div className='flex-col gap-3'>
     </div>
+    <LineChart referenceId={referenceId} referenceCurrencyId={referenceCurrencyId}/>
     <div className='flex flex-wrap justify-between'>
     <div className='lg:flex-col w-[100%] border-2  p-4 pl-4 mt-5 rounded-lg mr-12  md:w-[40%]'>
+
         <h1 className='text-left text-2xl mb-3 font-bold '>Value Statistics</h1>
         <p1 className= 'text-left mb-5'>{`An overview showing the statistics of ${coinData.name}, such as the base and quote currency, the rank, and trading volume.`}
 
