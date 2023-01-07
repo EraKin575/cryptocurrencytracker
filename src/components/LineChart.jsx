@@ -21,20 +21,14 @@ const LineChart=({referenceId,referenceCurrencyId})=>{
     }
     fetchHistoricalData();
     },[referenceId])
+    console.log(historicalData)
    
-
+  //add graph for 1h,24h,1y,4y,5y
 
     return (
+
         //line chart
-
         <>
-        
-
-            
-
-        
-
-
         </>
 
     )
