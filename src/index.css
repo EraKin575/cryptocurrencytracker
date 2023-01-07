@@ -7,4 +7,8 @@
     html {
       font-family:'Montserrat', sans-serif;
     }
+    body {
+      background-image: rgb(255, 255, 255);
+      margin-left: 10px;
+    }
   }

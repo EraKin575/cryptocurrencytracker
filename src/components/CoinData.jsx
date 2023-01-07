@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
-async function labelize(key){
-    for(let i=0;i<key.length;i++){
-        if(key[i]>='A' && key[i]<='Z'){
-            key.splice(i,0,' ')
-            i++
-        }
-           
-    }
-}
 
 const API_OPTIONS = {
   method: 'GET',
@@ -19,6 +10,8 @@ const API_OPTIONS = {
 };
 
 export default function CoinData({ referenceId, referenceCurrencyId }) {
+   
+  
   const [coinData, setCoinData] = useState('');
   const [error, setError] = useState(null);
 
@@ -71,14 +64,15 @@ export default function CoinData({ referenceId, referenceCurrencyId }) {
    <div className='flex-col ml-10 mt-5'>
     <div className='flex-col gap-3'>
     </div>
-    <div className='b-flex-col w-[50%] border-2  p-4 pl-4 mt-5 rounded-lg'>
-        <h1 className='text-left text-2xl font-bold '>Value Statistics</h1>
-        <p1 className= 'text-left '>{`An overview showing the statistics of ${coinData.name}, such as the base and quote currency, the rank, and trading volume.`}
+    <div className='flex flex-wrap justify-between'>
+    <div className='lg:flex-col w-[100%] border-2  p-4 pl-4 mt-5 rounded-lg mr-12  md:w-[40%]'>
+        <h1 className='text-left text-2xl mb-3 font-bold '>Value Statistics</h1>
+        <p1 className= 'text-left mb-5'>{`An overview showing the statistics of ${coinData.name}, such as the base and quote currency, the rank, and trading volume.`}
 
 </p1>
         {valueStatsData.map((keys)=>{
             return (
-                <div className=' flex gap-20 mb-8 border-b-2 justify-between'>
+                <div className='flex flex-wrap gap-20 mb-8 border-b-2 justify-between'>
                     <p className='font-montserrat w-40 font-semibold  text-lg'>{toSentenceCase(keys)}</p>
                     <p className='font-montserrat font-bold text-lg'>{(keys!=="rank" && keys!=="numberOfMarkets" && keys!=="numberOfExchanges")?(`$${Number(coinData[keys]).toFixed(2)}`):(`${coinData[keys]}`)}</p>
                     
@@ -89,7 +83,51 @@ export default function CoinData({ referenceId, referenceCurrencyId }) {
 
 
     
+    
+    <div className='flex-col w-[50%] border-2 mr-min h-min p-4 pl-4 mt-5 rounded-lg'>
+    <h1 className='text-left text-2xl mb-3 font-bold '>Supply Information</h1>
+    <p1 className= 'text-left mb-3 '>{`View the total and circulating supply of ${coinData.name}, including details on how the supplies are calculated.`}</p1>
+    {Object.keys(coinData.supply).map((keys)=>{
+        return (
+            <div className=' flex flex-wrap gap-20 mb-8 border-b-2 justify-between'>
+                <p className='font-montserrat w-40 font-semibold  text-lg'>{toSentenceCase(keys)}</p>
+                <p className='font-montserrat font-bold text-lg'>{coinData.supply[keys]}</p>
+                
+            </div>
+        )
+    })
+    }
+
     </div>
+    </div>
+    </div>
+    <div className='ml-9 mb-7'>
+      <h1 className='font-bold text-xl w-max mb-3'>Related Links:</h1>
+      <div className='flex flex-wrap gap-5'>
+        {coinData.links.map((link)=>{
+          return(
+            <div className='flex flex-col gap-2 bg-gray-300 px-5 rounded-lg'>
+             
+              <a href={link.url} target="_blank" rel="noreferrer">{link.type}</a>
+            </div>
+          )
+        }
+        )}
+
+
+
+    </div>
+    </div>
+    <div className='ml-9'>
+      <h1 className='text-left text-2xl font-bold mb-3'>{`About ${coinData.name}`}</h1>
+      {
+        <div className='text-left w-[90%]'  dangerouslySetInnerHTML={{__html:coinData.description}} />
+}
+
+      
+
+    </div>
+    
     
 
 

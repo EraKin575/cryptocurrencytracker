@@ -1,9 +1,13 @@
 import { DataGrid } from "@mui/x-data-grid";
+import { BrowserRouter,Router,Routes } from "react-router-dom";
 
 
 export default function CryptoGrid({rows,columns,handleRowClick}) {
     return (
-        <div style={{ height: 400, width: '100%' }}>
+        <BrowserRouter>
+        
+
+        <div style={{ height: 400, width:'100%' }}>
         <DataGrid
             //style for the table
             style={{fontFamily:'Montserrat',
@@ -20,5 +24,7 @@ export default function CryptoGrid({rows,columns,handleRowClick}) {
             
             />   
             </div>    
+            </BrowserRouter>
     )
+
 }

@@ -49,8 +49,8 @@ export default function DataTable() {
 
         setSearchItem(e.target.value);     
     }
-    const handleCategory=(index)=>{
-        setCategoryTag(index)
+    const handleCategory=(item)=>{
+        setCategoryTag(item)
     }
     const handleTime=(e)=>{
         setTimePeriod(e.target.value)
@@ -59,10 +59,10 @@ export default function DataTable() {
     
 
     const availableTimePeriods = ['1h','3h','12h','24h','7d','30d','3m','1y','3y','5y'];
-    const categoryTags=['meme','defi','stablecoin' ,'nft', 'dex', 'exchange' ,'staking' ,
+    const categoryTags=['All','meme','defi','stablecoin' ,'nft', 'dex', 'exchange' ,'staking' ,
     'dao', 'metaverse', 'gaming' ,'wrapped' ,'layer-1', 'layer-2']
     
-  
+  const categoryStyleClick="bg-"
    
 
 
@@ -73,7 +73,8 @@ export default function DataTable() {
         
     useEffect(()=>{
         let new_api = api;
-        new_api += `&tags%5B0%5D=${categoryTags[categoryTag]}`;
+
+        categoryTag!='All'?new_api += `&tags%5B0%5D=${categoryTag}`:new_api+="";
         setApi(new_api);
     },[categoryTag,api])
 
@@ -116,7 +117,7 @@ export default function DataTable() {
         
         { field: 'name',
          headerName:<p className='font-montserrat font-bold'>{'Name'}</p>,
-          width: 200,
+          width: 300,
           renderCell:(params)=>{
             return (
                 <CreateIconWName name={params.row.name} icon={params.row.icon} symbol={params.row.symbol}/>
@@ -311,33 +312,19 @@ export default function DataTable() {
         />
         <br></br>
 
-        <ButtonGroup variant="text" aria-label="text button group">
-        
-        {categoryTags.map((item,index)=>(
-            <Button sx={{
+        <div className='flex flex-row flex-wrap justify-evenly'>
+        {categoryTags.map((item,index)=>{
+            return (
+                <p onClick={
+                    ()=>handleCategory(item)
+                } className={'font-montserrat text-xs cursor-pointer  font-bold hover:text-[#0060ff] hover:bg-[#b3d1ff]   p-2 rounded-lg'}>{(item).toUpperCase()}</p>
+            )
+        })}
+        </div>
 
-                fontFamily:'Montserrat',
-                fontWeight:'bold',
-                color:'grey',
-                fontSize:10,
-                ":hover":{
-                    color:'black',
-                },
-                ":checked":{
-                    color:'black',
-                    backgroundColor:'grey'
-                }
-                
-            }}
-
-            onClick={     
-                ()=>{handleCategory(index)}}
-            active={categoryTag===index}  
-            >
-                {item}
-            </Button>
-        ))}
-        </ButtonGroup>
+       
+      
+       
         
         </div>
         
